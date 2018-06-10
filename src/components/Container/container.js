@@ -19,6 +19,9 @@ const ImageContainer = styled.div`
   width: 7%;
   padding: .2em;
   float: left;
+  @media (max-width: 860px) {
+    width: 20%;
+  }
 `;
 
 const Image = styled.img`
@@ -34,17 +37,17 @@ const ContentContainer = styled.div`
 `;
 
 class Container extends React.Component {
-  constructor(){
-    super()
-    this.state={
-      text:''
-    }
+  constructor () {
+    super();
+    this.state = {
+      text: ''
+    };
     this.handleChange = this.handleChange.bind(this);
   }
-  handleChange(event){
+  handleChange (event) {
     this.setState({
-      text:event.target.value
-    },()=>this.props.getSearchResult(this.state.text))
+      text: event.target.value
+    }, () => this.props.getSearchResult(this.state.text));
   }
   render () {
     return (
@@ -69,9 +72,9 @@ class Container extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-   getSearchResult(text){
-     dispatch(searchResults(text));
-   }
+  getSearchResult (text) {
+    dispatch(searchResults(text));
+  }
 });
 
 export default connect(null, mapDispatchToProps)(Container);

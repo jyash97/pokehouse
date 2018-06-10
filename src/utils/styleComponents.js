@@ -142,6 +142,12 @@ export const PokeCard = styled.div`
     border:1px solid rgba(164, 176, 190,1.0);
     box-shadow: 2px 3px 15px 0px rgba(164, 176, 190, 0.5);
   }
+  @media (max-width: 860px) {
+    width: 40%;
+  }
+  @media (max-width: 550px) {
+    width: 80%;
+  }
 `;
 
 export const PageContainer = styled.div`
