@@ -1,0 +1,7 @@
+{
+  "extends":["standard", "standard-react"],
+  "rules":{
+    "react/prop-types":0,
+    "semi":[2,"always"]
+    }
+}

@@ -6,17 +6,13 @@ import {withRouter} from 'react-router-dom';
 import { allPokemon, reset } from '../../utils/actions';
 import {
   Heading,
-  PokeCard,
-  LoadingBar,
-  LoadingImage,
-  Content,
-  Spinner,
-  Image,
-  CardHeading,
-  Capsules
+  Spinner
 } from '../../utils/styleComponents';
 
+import LoadingCard from './LoadingCard';
+import DisplayCard from './displayCard';
 import Pagination from './pagination';
+import Selector from './Selector';
 
 const CardContainer = styled.div`
   display: flex;
@@ -29,46 +25,32 @@ class Home extends React.Component {
   componentDidMount () {
     this.props.handleAllPoke(12, (this.props.match.params.id - 1) * 12);
   }
+
   componentDidUpdate (prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.props.resetCurrentPage();
       this.props.handleAllPoke(12, (this.props.match.params.id - 1) * 12);
     }
   }
+
   render () {
+    let searchResults = this.props.pokeDetails;
+    if (this.props.search) {
+      searchResults = searchResults.filter(data => data.name.startsWith(this.props.search.text));
+    }
     return (
       <React.Fragment>
         <Heading color='dark'>All Pokemons</Heading>
+        <Selector />
         <CardContainer>
           {this.props.pokeDetails.length > 0 ? (
-            this.props.pokeDetails.map(data => (
-              <PokeCard> { /* Data Component */ }
-                <LoadingImage>
-                  <Image src={data.sprites.front_default} />
-                </LoadingImage>
-                <Content>
-                  <CardHeading color='dark'>{data.name}</CardHeading>
-                  {data.types.map(typeObject => (
-                    <Capsules background='danger'>
-                      {typeObject.type.name}
-                    </Capsules>
-                  ))}
-                </Content>
-              </PokeCard>
-            ))
+            searchResults.length === 0 ? 'Nothing to Show'
+              : searchResults.map(data => (
+                <DisplayCard {...data} key={data.name} type={this.props.filter.type} />
+              ))
           ) : this.props.allPokeName.length > 0 ? (
             this.props.allPokeName.map(data => (
-              <PokeCard> { /* Loading Component */ }
-                <LoadingImage />
-                <Content>
-                  {
-                    this.props.pokeDetails.map(data => data)
-                  }
-                  <CardHeading color='dark'>{data.name}</CardHeading>
-                  <LoadingBar />
-                  <LoadingBar small />
-                </Content>
-              </PokeCard>
+              <LoadingCard name={data.name} key={data.name} />
             ))
           ) : (
             <Spinner />
@@ -82,7 +64,9 @@ class Home extends React.Component {
 
 const mapStateToProps = state => ({
   allPokeName: state.allPokeDetails,
-  pokeDetails: state.singleDetails
+  pokeDetails: state.singleDetails,
+  search: state.searchPoke,
+  filter: state.filterPoke
 });
 
 const mapDispatchToProps = dispatch => ({

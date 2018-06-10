@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
+import {searchResults} from '../../utils/actions';
 import {Input, Button} from '../../utils/styleComponents';
 import Logo from './logo.png';
 
@@ -32,6 +34,18 @@ const ContentContainer = styled.div`
 `;
 
 class Container extends React.Component {
+  constructor(){
+    super()
+    this.state={
+      text:''
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event){
+    this.setState({
+      text:event.target.value
+    },()=>this.props.getSearchResult(this.state.text))
+  }
   render () {
     return (
       <React.Fragment>
@@ -42,7 +56,7 @@ class Container extends React.Component {
             </ImageContainer>
           </Link>
           <ContentContainer>
-            <Input placeholder='Search Pokemon' />
+            <Input placeholder='Search Pokemon' value={this.state.text} onChange={this.handleChange} onKeyPress={this.handleSearch} />
             <Button background='primary'>
               Search
             </Button>
@@ -53,4 +67,11 @@ class Container extends React.Component {
     );
   }
 }
-export default Container;
+
+const mapDispatchToProps = dispatch => ({
+   getSearchResult(text){
+     dispatch(searchResults(text));
+   }
+});
+
+export default connect(null, mapDispatchToProps)(Container);

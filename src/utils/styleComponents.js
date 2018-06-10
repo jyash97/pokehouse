@@ -263,3 +263,35 @@ export const ActivePageNumber = PageNumber.extend`
   cursor: default;
   transform: translateY(-2px);
 `;
+
+export const ActiveCapsules = Capsules.extend`
+  background: ${() => getBackground('green')};
+  box-shadow: transform: translateY(-1px);
+  box-shadow: 2px 3px 10px 0px rgba(164, 176, 190, 0.5);
+  color: white;
+`;
+
+export const Select = styled.select`
+  cursor: pointer;
+  float: right;
+  display: inline-block;
+  margin: 1em;
+  font-size: .9em;
+  padding: .5em .8em;
+  cursor: pointer;
+  border: 0;
+  color: white;
+  background: ${() => getBackground('green')};
+  box-shadow: transform: translateY(-1px);
+  transition: all  ease .2s;
+  box-shadow: 2px 3px 10px 0px rgba(164, 176, 190, 0.5);
+  :active,:focus{
+    outline: none;
+  }
+  :hover{
+    background: white;
+    border: 1px solid ${() => getBackground('green')};
+    color: ${() => getBackground('green')};
+    box-shadow: transform: translateY(-2px);
+  }
+`;
